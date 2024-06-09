@@ -1,0 +1,35 @@
+Width == diff between two nodes of same level in tree
+we need to do indexing of the tree nodes 
+
+class Solution {
+public:
+    int widthOfBinaryTree(TreeNode* root) {
+        if(!root)
+            return 0;
+        long long res=0;
+        queue<pair<TreeNode*,long long>>q;
+        q.push({root,0});
+        while(!q.empty())
+        {
+            long long n=q.size();
+            long long levelmin=q.front().second;//find minimum index of current level
+            long long l,h;
+            for(int i=0;i<n;i++)
+            {
+                auto p=q.front();
+                q.pop();
+                long long curr=p.second-levelmin;// subtract current index with minimum index of current level to avoid overflow
+                if(i==0)
+                    l=curr;
+                if(i==n-1)
+                    h=curr;
+                if(p.first->left)
+                    q.push({p.first->left,2*curr+1});
+                if(p.first->right)
+                    q.push({p.first->right,2*curr+2});
+                res=max(res,(h-l+1));
+            }
+        }
+        return res;
+    }
+};
